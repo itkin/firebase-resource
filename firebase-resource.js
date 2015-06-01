@@ -51,6 +51,13 @@ factory('firebaseResource', function($injector, $rootScope, $log, $timeout, $fil
 
             _this[model.getName()] = function() {
               return {
+                model: function() {
+                  model
+                },
+                child: function(path){
+                  var path = path ? parent_rels_path
+                  firebase.child(parent_rels_path+ref)
+                },
                 query: function(opts, callback) {
                   var opts = opts ? opts : {};
                   opts.path = parent_rels_path;
@@ -144,7 +151,7 @@ factory('firebaseResource', function($injector, $rootScope, $log, $timeout, $fil
           $log.info('child_added');
 
           if (opts.parent) {
-            firebase.child(Resource.getPath() + "/" + snapshot.name()).once('value', function(snap) {
+            firebase.child(Resource.getPath() + "/" + snapshot.key()).once('value', function(snap) {
               if (snap.val()) {
                 var resource = updateResource(snap);
                 resource.init();
@@ -184,16 +191,16 @@ factory('firebaseResource', function($injector, $rootScope, $log, $timeout, $fil
     }
 
     function removeResource(snapshot) {
-      var name = snapshot.name ? snapshot.name() : snapshot.id;
-      if (map[name]) {
-        var index = list.indexOf(map[name]);
+      var key = snapshot.key ? snapshot.key() : snapshot.id;
+      if (map[key]) {
+        var index = list.indexOf(map[key]);
         list.splice(index, 1);
-        delete map[name];
+        delete map[key];
       }
     }
 
     function updateResource(snapshot) {
-      var name = snapshot.name();
+      var name = snapshot.key();
       var data = snapshot.val();
       if (data) {
         if (map[name]) {
@@ -264,7 +271,7 @@ factory('firebaseResource', function($injector, $rootScope, $log, $timeout, $fil
 
 
     Resource.getName = function() {
-      return resourceRef.name();
+      return resourceRef.key();
     }
 
     Resource.getPath = function() {
@@ -346,7 +353,7 @@ factory('firebaseResource', function($injector, $rootScope, $log, $timeout, $fil
           ref = this.id ? resourceRef.child(this.id) : resourceRef.push();
 
       if (!this.id) {
-        this.id = ref.name();
+        this.id = ref.key();
         setAssociations(this);
         newResource = true;
       }
