@@ -1,7 +1,7 @@
 {
   "name": "firebase-resource",
   "main": "firebase-resource.js",
-  "version": "0.1.2",
+  "version": "0.1.2.1",
   "homepage": "https://github.com/marknutter/firebase-resource",
   "authors": [
     "Mark Nutter <marknutter@gmail.com>"
@@ -18,5 +18,11 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "moduleType": [
+    "es6"
+  ],
+  "dependencies": {
+    "jasmine": "~2.3.4"
+  }
 }

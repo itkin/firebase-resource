@@ -25,9 +25,9 @@ factory('firebaseResource', function($injector, $rootScope, $log, $timeout, $fil
       var resourceRef = firebase.child(opts.path);
       var resourcePath = firebase.path;
       // var resourceQuery = firebase.child(opts.path).limit(globalLimit);
-      if (!opts.belongsTo) {
-        setListeners(opts.path, options);
-      }
+      //if (!opts.belongsTo) {
+      //  setListeners(opts.path, options);
+      //}
     }
 
     function Resource(data) {
@@ -51,13 +51,6 @@ factory('firebaseResource', function($injector, $rootScope, $log, $timeout, $fil
 
             _this[model.getName()] = function() {
               return {
-                model: function() {
-                  model
-                },
-                child: function(path){
-                  var path = path ? parent_rels_path
-                  firebase.child(parent_rels_path+ref)
-                },
                 query: function(opts, callback) {
                   var opts = opts ? opts : {};
                   opts.path = parent_rels_path;
@@ -156,6 +149,7 @@ factory('firebaseResource', function($injector, $rootScope, $log, $timeout, $fil
                 var resource = updateResource(snap);
                 resource.init();
                 // add local variable for parent for filtering purposes.
+                //resource[opts.parent.getName() + "_id"] = opts.parent.id;
                 resource["_" + opts.parent.getName() + "_parent_id"] = opts.parent.id;
                 resource._parent_path = opts.parent.getName() + "/" + opts.parent.id;
                 resource._parent_rels_path = opts.parent.getName() + "/" + opts.parent.id + "/rels/" + Resource.getName() + "/";
