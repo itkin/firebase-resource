@@ -1,2 +1,4 @@
 *.orig
 .DS_Store*
+.idea
+bower_components
